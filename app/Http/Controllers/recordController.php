@@ -14,9 +14,11 @@ class recordController extends Controller
     }
 
     public function store(){
-        error_log('testerror');
-        // error_log(request('username'));
-        
-        return redirect('/records');
+        $record = new Record();
+        $record->author_name = request('username');
+        $record->blob_record = request('recordBlob');
+        $record->save();
+        //return view('pages.index');
+        // return redirect()->route('pages.about');
     }
 }

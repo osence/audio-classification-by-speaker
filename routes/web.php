@@ -14,6 +14,7 @@ use App\Http\Controllers\recordController;
 |
 */
 
+Route::post('/', [recordController::class, 'store']);
 Route::get('/', function () {
     return view('pages.index');
 });
@@ -22,5 +23,3 @@ Route::get('/about', function () {
 });
 
 Route::get('/records', [recordController::class, 'index']);
-
-Route::post('/', [recordController::class, 'store']);

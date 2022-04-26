@@ -2162,15 +2162,14 @@ var ready = jQuery(document).ready(function () {
         formData.append("recordBlob", currentBlob);
         formData.append("username", username);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://127.0.0.1:8000/', true);
+        xhr.open('POST', '/', true);
+        xhr.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector("[name=csrf-token]").content);
 
         xhr.onload = function (e) {
           alert(e);
         };
 
         xhr.send(formData); // multipart/form-data
-
-        console.log('testRequest');
       });
     }
   });
