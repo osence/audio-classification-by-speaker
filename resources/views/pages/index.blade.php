@@ -9,7 +9,8 @@
             <div data-role="controls">
                 <button>Record</button>
             </div>
-            <div data-role="recordings"></div>
+                <div data-role="recordings"></div>
+                <div data-role="submit"></div>
         </div>
 </div>
 @endsection
