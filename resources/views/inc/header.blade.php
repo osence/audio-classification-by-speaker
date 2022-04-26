@@ -4,7 +4,7 @@
         <ul class="nav me-auto">
             <li class="nav-item"><a href="/" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
             <li class="nav-item"><a href="/about" class="nav-link link-dark px-2">About</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Records</a></li>
+            <li class="nav-item"><a href="/records" class="nav-link link-dark px-2">Records</a></li>
         </ul>
         <ul class="nav">
             <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>

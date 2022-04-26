@@ -2064,6 +2064,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+var currentBlob;
 var ready = jQuery(document).ready(function () {
   var $ = jQuery;
   var myRecorder = {
@@ -2101,7 +2102,7 @@ var ready = jQuery(document).ready(function () {
         if (null !== listObject && 'object' === _typeof(listObject) && listObject.length > 0) {
           // Export the WAV file
           myRecorder.objects.recorder.exportWAV(function (blob) {
-            // // HTTP запрос на отправку записаной аудиозаписи
+            currentBlob = blob; // // HTTP запрос на отправку записаной аудиозаписи
             // var xhr=new XMLHttpRequest();
             // xhr.onload=function(e) {
             //     if(this.readyState === 4) {
@@ -2113,16 +2114,17 @@ var ready = jQuery(document).ready(function () {
             // fd.append("audio_data",blob, "record");
             // xhr.open("POST","upload.php",true);
             // xhr.send(fd);
+
             var url = (window.URL || window.webkitURL).createObjectURL(blob); // Prepare the playback
 
             var audioObject = $('<audio controls></audio>').attr('src', url); // Prepare the download link
 
             var downloadObject = $('<a>&#9660;</a>').attr('href', url).attr('download', new Date().toUTCString() + '.wav'); // Wrap everything in a row
 
-            var holderObject = $('<div class="row-record"></div>').append(audioObject).append(downloadObject);
-            console.log(downloadObject.attr('href'));
-            console.log(downloadObject.attr('download'));
-            console.log(url); // Append to the list
+            var holderObject = $('<div class="row-record"></div>').append(audioObject).append(downloadObject); // console.log(downloadObject.attr('href'));
+            // console.log(downloadObject.attr('download'));
+            // console.log(url);
+            // Append to the list
 
             listObject.empty();
             listObject.append(holderObject);
@@ -2132,7 +2134,8 @@ var ready = jQuery(document).ready(function () {
     }
   }; // Prepare the recordings list
 
-  var listObject = $('[data-role="recordings"]'); // Prepare the record button
+  var listObject = $('[data-role="recordings"]');
+  var submitObject = $('[data-role="submit"]'); // Prepare the record button
 
   $('[data-role="controls"] > button').click(function () {
     // Initialize the recorder
@@ -2141,12 +2144,34 @@ var ready = jQuery(document).ready(function () {
     var buttonState = !!$(this).attr('data-recording'); // Toggle
 
     if (!buttonState) {
-      listObject.cle;
       $(this).attr('data-recording', 'true');
       myRecorder.start();
     } else {
       $(this).attr('data-recording', '');
       myRecorder.stop(listObject);
+      var submitButton = $('<button>Save Record</button>');
+      var labelObject = $('<label for="username" class="username" re>Your name:</label>');
+      var inputObject = $('<input type="text" id="username" name="username"></input>');
+      submitObject.empty();
+      submitObject.append(labelObject);
+      submitObject.append(inputObject);
+      submitObject.append(submitButton);
+      $('[data-role="submit"] > button').click(function () {
+        var username = $('#username').val();
+        var formData = new FormData();
+        formData.append("recordBlob", currentBlob);
+        formData.append("username", username);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://127.0.0.1:8000/', true);
+
+        xhr.onload = function (e) {
+          alert(e);
+        };
+
+        xhr.send(formData); // multipart/form-data
+
+        console.log('testRequest');
+      });
     }
   });
 });

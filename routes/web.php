@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\recordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,7 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('pages.about');
 });
+
+Route::get('/records', [recordController::class, 'index']);
+
+Route::post('/', [recordController::class, 'store']);
