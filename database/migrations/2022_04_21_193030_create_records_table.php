@@ -16,7 +16,7 @@ class CreateRecordsTable extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->binary('blob_record')->nullable();
+            $table->text('filename')->nullable();
             $table->text('author_name');
         });
     }

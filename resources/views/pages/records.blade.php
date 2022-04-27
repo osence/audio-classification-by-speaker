@@ -11,17 +11,20 @@
             if (null !== listRecords) {
                 var records = {!! json_encode($records->toArray()) !!};
                 $.each(records, function (index, value) {
-                    var url =  Object.values(value)[3]
-                    var author_name = Object.values(value)[4]
+
+                    var filename = Object.values(value)[3];
+                    var src = 'recordsFolder/'+ filename;
+                    var author_name = Object.values(value)[4];
+
 
                     // Prepare the playback
                     var audioObject = $('<audio controls></audio>')
-                        .attr('src', url);
+                        .attr('src', src);
 
                     // Prepare the download link
                     var downloadObject = $('<a>&#9660;</a>')
-                        .attr('href', url)
-                        .attr('download', new Date().toUTCString() + '.wav');
+                        .attr('href', src)
+                        .attr('download', filename + '.wav');
 
                     // Wrap everything in a row
                     var holderObject = $('<div class="row-record"></div>')

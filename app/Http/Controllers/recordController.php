@@ -8,6 +8,7 @@ class recordController extends Controller
 {
     public function index(){
         $records = Record::all();
+        error_log($records);
         return view('pages.records', [
             'records' => $records,
         ]);
@@ -16,8 +17,10 @@ class recordController extends Controller
     public function store(){
         $record = new Record();
         $record->author_name = request('username');
-        $record->blob_record = request('recordBlob');
+        $record->filename = request('filename');
         $record->save();
+        error_log(request('username'));
+        error_log(request('filename'));
         //return view('pages.index');
         // return redirect()->route('pages.about');
     }

@@ -2064,7 +2064,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-var currentBlob;
+var currentFilename;
 var ready = jQuery(document).ready(function () {
   var $ = jQuery;
   var myRecorder = {
@@ -2102,24 +2102,38 @@ var ready = jQuery(document).ready(function () {
         if (null !== listObject && 'object' === _typeof(listObject) && listObject.length > 0) {
           // Export the WAV file
           myRecorder.objects.recorder.exportWAV(function (blob) {
-            currentBlob = blob; // // HTTP запрос на отправку записаной аудиозаписи
-            // var xhr=new XMLHttpRequest();
-            // xhr.onload=function(e) {
-            //     if(this.readyState === 4) {
-            //         console.log("Server returned: ",e.target.responseText);
-            //     }
-            // };
-            // var fd=new FormData();
-            // Постфикс для названий файлов по айди
-            // fd.append("audio_data",blob, "record");
-            // xhr.open("POST","upload.php",true);
-            // xhr.send(fd);
+            // HTTP запрос на отправку записаной аудиозаписи
+            var xhr = new XMLHttpRequest();
 
+            xhr.onload = function (e) {
+              if (this.readyState === 4) {
+                console.log("Server returned: ", e.target.responseText);
+              }
+            };
+
+            var fd = new FormData();
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mmmm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+
+            var hh = String(today.getHours() + 1).padStart(2, '0'); //January is 0!
+
+            var mm = String(today.getMinutes() + 1).padStart(2, '0'); //January is 0!
+
+            var ss = String(today.getSeconds() + 1).padStart(2, '0'); //January is 0!
+
+            var yyyy = today.getFullYear();
+            var filename = ss + '-' + mm + '-' + hh + '-' + dd + '-' + mmmm + '-' + yyyy;
+            currentFilename = filename + '.wav'; //Постфикс для названий файлов по айди
+
+            fd.append("audio_data", blob, filename);
+            xhr.open("POST", "upload.php", true);
+            xhr.send(fd);
             var url = (window.URL || window.webkitURL).createObjectURL(blob); // Prepare the playback
 
             var audioObject = $('<audio controls></audio>').attr('src', url); // Prepare the download link
 
-            var downloadObject = $('<a>&#9660;</a>').attr('href', url).attr('download', new Date().toUTCString() + '.wav'); // Wrap everything in a row
+            var downloadObject = $('<a>&#9660;</a>').attr('href', url).attr('download', filename + '.wav'); // Wrap everything in a row
 
             var holderObject = $('<div class="row-record"></div>').append(audioObject).append(downloadObject); // console.log(downloadObject.attr('href'));
             // console.log(downloadObject.attr('download'));
@@ -2159,15 +2173,11 @@ var ready = jQuery(document).ready(function () {
       $('[data-role="submit"] > button').click(function () {
         var username = $('#username').val();
         var formData = new FormData();
-        formData.append("recordBlob", currentBlob);
+        formData.append("filename", currentFilename);
         formData.append("username", username);
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/', true);
-        xhr.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector("[name=csrf-token]").content);
-
-        xhr.onload = function (e) {
-          alert(e);
-        };
+        xhr.setRequestHeader("X-CSRF-TOKEN", document.head.querySelector("[name=csrf-token]").content); // xhr.onload = function(e) { alert(e) };
 
         xhr.send(formData); // multipart/form-data
       });
