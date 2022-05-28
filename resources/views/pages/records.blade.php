@@ -4,10 +4,10 @@
 
 @section('content')
     <!-- &nbsp &emsp-->
-    <div data-role="records">
+    <div data-role="recordings">
     </div>
     <script>
-            var listRecords = $('[data-role="records"]');
+            var listRecords = $('[data-role="recordings"]');
             if (null !== listRecords) {
                 var records = {!! json_encode($records->toArray()) !!};
                 $.each(records, function (index, value) {

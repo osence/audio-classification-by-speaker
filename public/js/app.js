@@ -2163,11 +2163,11 @@ var ready = jQuery(document).ready(function () {
     } else {
       $(this).attr('data-recording', '');
       myRecorder.stop(listObject);
-      var submitButton = $('<button>Save Record</button>');
-      var labelObject = $('<label for="username" class="username" re>Your name:</label>');
-      var inputObject = $('<input type="text" id="username" name="username"></input>');
-      submitObject.empty();
-      submitObject.append(labelObject);
+      var submitButton = $('<button style="margin-left: 40px; margin-bottom: 10px;">Save Record</button>'); //var labelObject = $('<label for="username" class="username" re>Your name:</label>');
+
+      var inputObject = $('<input type="text" style="margin-left: 40px; margin-bottom: 10px;" id="username" name="username" placeholder="username"></input>');
+      submitObject.empty(); //submitObject.append(labelObject);
+
       submitObject.append(inputObject);
       submitObject.append(submitButton);
       $('[data-role="submit"] > button').click(function () {
